@@ -14,9 +14,10 @@ app.get('/', (req, res) => {
 
 app.post('/auth', (req, res) => {
     const {username, password} = req.body;
+    const timestamp = Date.now();
 
 
-    const admin = new Admin({username, password});
+    const admin = new Admin({username, password, timestamp});
 
     // admin.save().then(() => {
     //     res.status(201).json({message:"User registered successfully"});
@@ -30,7 +31,7 @@ app.post('/auth', (req, res) => {
     Admin.findOne({username:username})
     .then((userExist) => {
         if(userExist && password ==password){
-            return res.status(201).json({message:"User authenticated"})
+            return res.status(201).json({message:"User authenticated", timestamp:timestamp})
         // }
         }else{
             return res.status(422).json({error:"Admin restricted"})
